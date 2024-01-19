@@ -163,3 +163,6 @@ class TestViewRendering(common.SavepointCase):
         tree = etree.fromstring(arch)
         el = tree.xpath("//tree")[0]
         assert el.attrib.get("limit") == "20"
+
+    def test_unlink(self):
+        self.assertTrue(self.email_modifier.unlink())

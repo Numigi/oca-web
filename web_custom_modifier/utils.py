@@ -3,8 +3,6 @@
 
 import json
 
-from typing import List, Mapping
-
 STANDARD_MODIFIERS = (
     "invisible",
     "column_invisible",

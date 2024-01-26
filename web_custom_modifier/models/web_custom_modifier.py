@@ -93,4 +93,3 @@ class WebCustomModifier(models.Model):
             if model in el["models"]
             and all(id_ not in user_group_ids for id_ in el["excluded_group_ids"])
         ]
-

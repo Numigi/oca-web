@@ -111,29 +111,24 @@ class TestViewRendering(common.SavepointCase):
 
     def test_user_in_excluded_groups(self):
         modifier = "invisible"
-
         group = self.env.ref("base.group_system")
         self.street_modifier.modifier = modifier
         self.street_modifier.excluded_group_ids = group
-
         self.env.user.groups_id |= group
-
         tree = self._get_rendered_view_tree()
         el = tree.xpath("//field[@name='street']")[0]
         self.assertFalse(_extract_modifier_value(el, modifier))
 
     def test_user_not_in_excluded_groups(self):
         modifier = "invisible"
-
         group = self.env.ref("base.group_system")
         self.street_modifier.modifier = modifier
         self.street_modifier.excluded_group_ids = group
-
         self.env.user.groups_id -= group
-
         tree = self._get_rendered_view_tree()
         el = tree.xpath("//field[@name='street']")[0]
         self.assertTrue(_extract_modifier_value(el, modifier))
+
 
     def test_selection_hide__fields_view_get(self):
         fields = self.env["res.partner"].fields_view_get(view_id=self.view.id)["fields"]

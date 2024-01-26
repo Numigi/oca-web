@@ -1,9 +1,18 @@
 # Copyright 2023 Numigi (tm) and all its contributors (https://bit.ly/numigiens)
 # License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl).
 
+import json
+
 from odoo import models
 
 from ..utils import set_custom_modifiers_on_fields, add_custom_modifiers_to_view_arch
+
+STANDARD_MODIFIERS = (
+    "invisible",
+    "column_invisible",
+    "readonly",
+    "required",
+)
 
 
 class ViewWithCustomModifiers(models.Model):

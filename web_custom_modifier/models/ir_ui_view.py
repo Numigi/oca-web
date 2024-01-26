@@ -3,7 +3,7 @@
 
 from odoo import models
 
-from ..utils import set_custom_modifiers_on_fields, add_custom_modifiers_to_view_arch
+from ..utils import add_custom_modifiers_to_view_arch, set_custom_modifiers_on_fields
 
 
 class ViewWithCustomModifiers(models.Model):

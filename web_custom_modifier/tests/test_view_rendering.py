@@ -85,13 +85,13 @@ class TestViewRendering(common.SavepointCase):
         self.email_modifier.modifier = modifier
         tree = self._get_rendered_view_tree()
         el = tree.xpath("//field[@name='email']")[0]
-        assert _extract_modifier_value(el, modifier) is True
+        self.assertTrue(_extract_modifier_value(el, modifier))
 
     def test_field_force_save(self):
         self.email_modifier.modifier = "force_save"
         tree = self._get_rendered_view_tree()
         el = tree.xpath("//field[@name='email']")[0]
-        assert el.attrib["force_save"] == "1"
+        self.assertEqual(el.attrib["force_save"], "1")
 
     def test_two_modifier_same_field(self):
         self.email_modifier.modifier = "invisible"
@@ -99,61 +99,55 @@ class TestViewRendering(common.SavepointCase):
         self.email_modifier.copy().modifier = "column_invisible"
         tree = self._get_rendered_view_tree()
         el = tree.xpath("//field[@name='email']")[0]
-        assert _extract_modifier_value(el, "column_invisible") is True
-        assert _extract_modifier_value(el, "readonly") is True
-        assert _extract_modifier_value(el, "invisible") is True
+        self.assertTrue(_extract_modifier_value(el, "column_invisible"))
+        self.assertTrue(_extract_modifier_value(el, "readonly"))
+        self.assertTrue(_extract_modifier_value(el, "invisible"))
 
     def test_xpath_modifier(self, modifier="invisible"):
         self.street_modifier.modifier = modifier
         tree = self._get_rendered_view_tree()
         el = tree.xpath("//field[@name='street']")[0]
-        assert _extract_modifier_value(el, modifier) is True
+        self.assertTrue(_extract_modifier_value(el, modifier))
 
     def test_user_in_excluded_groups(self):
         modifier = "invisible"
-
         group = self.env.ref("base.group_system")
         self.street_modifier.modifier = modifier
         self.street_modifier.excluded_group_ids = group
-
         self.env.user.groups_id |= group
-
         tree = self._get_rendered_view_tree()
         el = tree.xpath("//field[@name='street']")[0]
-        assert not _extract_modifier_value(el, modifier)
+        self.assertFalse(_extract_modifier_value(el, modifier))
 
     def test_user_not_in_excluded_groups(self):
         modifier = "invisible"
-
         group = self.env.ref("base.group_system")
         self.street_modifier.modifier = modifier
         self.street_modifier.excluded_group_ids = group
-
         self.env.user.groups_id -= group
-
         tree = self._get_rendered_view_tree()
         el = tree.xpath("//field[@name='street']")[0]
-        assert _extract_modifier_value(el, modifier)
+        self.assertTrue(_extract_modifier_value(el, modifier))
 
     def test_selection_hide__fields_view_get(self):
         fields = self.env["res.partner"].fields_view_get(view_id=self.view.id)["fields"]
         options = {i[0]: i[1] for i in fields["type"]["selection"]}
-        assert self.hidden_option not in options
+        self.assertNotIn(self.hidden_option, options)
 
     def test_selection_hide__fields_get(self):
         fields = self.env["res.partner"].fields_get()
         options = {i[0]: i[1] for i in fields["type"]["selection"]}
-        assert self.hidden_option not in options
+        self.assertNotIn(self.hidden_option, options)
 
     def test_widget(self):
         tree = self._get_rendered_view_tree()
         el = tree.xpath("//field[@name='parent_id']")[0]
-        assert el.attrib.get("widget") == "custom_widget"
+        self.assertEqual(el.attrib.get("widget"), "custom_widget")
 
     def test_optional(self):
         tree = self._get_rendered_view_tree()
         el = tree.xpath("//field[@name='name']")[0]
-        assert el.attrib.get("optional") == "show"
+        self.assertEqual(el.attrib.get("optional"), "show")
 
     def test_nbr_line_per_page(self):
         model_view = self.env.ref("base.view_model_form")
@@ -162,4 +156,4 @@ class TestViewRendering(common.SavepointCase):
         ]["views"]["tree"]["arch"]
         tree = etree.fromstring(arch)
         el = tree.xpath("//tree")[0]
-        assert el.attrib.get("limit") == "20"
+        self.assertEqual(el.attrib.get("limit"), "20")

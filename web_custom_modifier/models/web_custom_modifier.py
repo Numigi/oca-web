@@ -1,7 +1,7 @@
 # Copyright 2023 Numigi (tm) and all its contributors (https://bit.ly/numigiens)
 # License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl).
 
-from odoo import api, fields, models, modules, tools
+from odoo import api, fields, models, tools
 
 
 class WebCustomModifier(models.Model):
@@ -63,11 +63,10 @@ class WebCustomModifier(models.Model):
         return True
 
     def _clear_modifier_cache(self):
-        for model in (self.sudo().env["web.custom.modifier"].search([
-        ]).mapped("model_ids.model")):
+        for model in (
+            self.sudo().env["web.custom.modifier"].search([]).mapped("model_ids.model")
+        ):
             self.env[model].clear_caches()
-
-
 
     @tools.ormcache()
     def _get_cache(self):
@@ -94,3 +93,4 @@ class WebCustomModifier(models.Model):
             if model in el["models"]
             and all(id_ not in user_group_ids for id_ in el["excluded_group_ids"])
         ]
+

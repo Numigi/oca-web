@@ -49,18 +49,25 @@ class WebCustomModifier(models.Model):
     @api.model
     def create(self, vals):
         new_record = super().create(vals)
-        self._get_cache.clear_cache()
+        self._clear_modifier_cache()
         return new_record
 
     def write(self, vals):
         super().write(vals)
-        self._get_cache.clear_cache()
+        self._clear_modifier_cache()
         return True
 
     def unlink(self):
         super().unlink()
-        self._get_cache.clear_cache()
+        self._clear_modifier_cache()
         return True
+
+    def _clear_modifier_cache(self):
+        for model in (self.sudo().env["web.custom.modifier"].search([
+        ]).mapped("model_ids.model")):
+            self.env[model].clear_caches()
+
+
 
     @tools.ormcache()
     def _get_cache(self):

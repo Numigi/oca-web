@@ -1,18 +1,9 @@
 # Copyright 2023 Numigi (tm) and all its contributors (https://bit.ly/numigiens)
 # License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl).
 
-import json
-
 from odoo import models
 
 from ..utils import set_custom_modifiers_on_fields, add_custom_modifiers_to_view_arch
-
-STANDARD_MODIFIERS = (
-    "invisible",
-    "column_invisible",
-    "readonly",
-    "required",
-)
 
 
 class ViewWithCustomModifiers(models.Model):
@@ -25,7 +16,7 @@ class ViewWithCustomModifiers(models.Model):
         """
         model_name = name_manager.Model._name
         modifiers = self.env["web.custom.modifier"].get(model_name)
-        node_with_custom_modifiers = _add_custom_modifiers_to_view_arch(modifiers, node)
+        node_with_custom_modifiers = add_custom_modifiers_to_view_arch(modifiers, node)
         set_custom_modifiers_on_fields(modifiers, name_manager.available_fields)
         self.clear_caches()  # Clear the cache in order to recompute _get_active_rules
         return super().postprocess(

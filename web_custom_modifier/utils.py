@@ -1,8 +1,24 @@
 # Copyright 2023 - today Numigi (tm) and all its contributors (https://bit.ly/numigiens)
 # License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl).
 
+import json
 
-def set_custom_modifiers_on_fields(modifiers: list[dict], fields: dict[str, dict]):
+from typing import List, Mapping
+
+STANDARD_MODIFIERS = (
+    "invisible",
+    "column_invisible",
+    "readonly",
+    "required",
+)
+
+
+def set_custom_modifiers_on_fields(modifiers, fields):
+    """
+    :param modifiers: list[dict] of modifiers to apply on the fields
+    :param fields:  dict[str, dict]  of model's fields and their attributes.
+    :return:
+    """
     _hide_selection_items(modifiers, fields)
 
 
